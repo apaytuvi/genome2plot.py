@@ -27,7 +27,7 @@ largest = chrom_largest[0][1]
 
 chrom_largest_keys = []
 for inum in xrange(0, len(chrom_largest)):
-    if chrom_largest[inum][1] < (chrom_largest[0][1] * 0.35):
+    if chrom_largest[inum][1] < (chrom_largest[0][1] * 0.05):
         chrom_largest = None
         break
     chrom_largest_keys.append(chrom_largest[inum][0])
