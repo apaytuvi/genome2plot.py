@@ -8,7 +8,7 @@ from matplotlib.collections import BrokenBarHCollection
 variants = sys.argv[1]
 genome_len = sys.argv[2]
 
-print "Reading genome bed file..."
+print 'Reading genome bed file...'
 
 file1 = open(genome_len)
 lines = file1.readlines()
@@ -23,15 +23,16 @@ for line in lines:
 
 file1.close()
 chrom_largest = sorted(chrom_lens.items(), key=operator.itemgetter(1), reverse = True)
+largest = chrom_largest[0][1]
 
 chrom_largest_keys = []
 for inum in xrange(0, len(chrom_largest)):
-    if chrom_largest[inum][1] < (chrom_largest[0][1] * 0.05):
+    if chrom_largest[inum][1] < (chrom_largest[0][1] * 0.35):
         chrom_largest = None
         break
     chrom_largest_keys.append(chrom_largest[inum][0])
 
-print "Reading variants bed file..."
+print 'Reading variants bed file...'
 
 file2 = open(variants)
 lines = file2.readlines()
@@ -44,23 +45,23 @@ bed_sorted = sorted(bed_lines, key=lambda x: (x[0], x[1]))
 bed_lines = None
 
 color_lookup = {
-  "INS": "Magenta",
-  "DEL": "GreenYellow",
-  "DUP": "OrangeRed",
-  "INV": "SteelBlue",
-  "TRA": "MistyRose",
-  "CHR": "LightSalmon"
+  'DUP': 'Red',
+  'DEL': 'Lime',
+  'INS': 'DarkOrange',
+  'INV': 'SteelBlue',
+  'TRA': 'Gainsboro',
+  'CHR': 'Bisque'
 }
 
-height = 0.9
-spacing = 0.9
+height = 0.6
+spacing = 0.4
 
 def ideograms(fn, clargest):
     xranges, colors, wid = [], [], []
     last_chrom = None
     last_start = 0
     ymin = 0
-    print "Creating plot..."
+    print 'Creating plot...'
     for chrom, start, stop, label in fn:
         width = stop - start
         if chrom not in clargest:
@@ -84,7 +85,8 @@ def ideograms(fn, clargest):
     yrange = (ymin, height)
     yield xranges, yrange, colors, last_chrom
 
-fig = plt.figure()
+
+fig = plt.figure(figsize=(8, 0.3 * len(chrom_largest_keys)))
 ax = fig.add_subplot(111)
 
 yticks = []
@@ -100,9 +102,12 @@ for xranges, yrange, colors, chromosome in ideograms(bed_sorted, chrom_largest_k
 ax.axis('tight')
 ax.set_yticks(yticks)
 ax.set_yticklabels(yticklabels)
-ax.set_xticks([])
 
-fig.show()
-fig.savefig('foo.png')
+xlabels = []
+for xt in range(1, largest, int(largest/10)-1):
+	xlabels.append('{:.2e}'.format(xt))
 
+ax.set_xticklabels(xlabels, fontsize=6.5)
+ax.set_xticks(range(1, largest, int(largest/10)-1))
 
+fig.savefig('foo.png', dpi=400)
