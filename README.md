@@ -15,10 +15,10 @@ The output should be something like this:
 For a proper visualization, only chromosomes larger than the 5% of the largest chromosome length are displayed (thus, small scaffolds not displayed). Structural variations are represented by different colours. Colour dictionary:
 ```
 {
-"INS": "Magenta",
-"DEL": "GreenYellow",
-"DUP": "OrangeRed",
-"INV": "SteelBlue",
-"TRA": "MistyRose",
+'DUP': 'Red',
+'DEL': 'Lime',
+'INS': 'DarkOrange',
+'INV': 'SteelBlue',
+'TRA': 'Gainsboro'
 }
 ```
